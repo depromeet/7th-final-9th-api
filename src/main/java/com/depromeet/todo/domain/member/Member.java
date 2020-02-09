@@ -33,6 +33,7 @@ public class Member {
     @Embedded
     private OAuthUserInfo oauthUserInfo; // XXX: 필드 이름을 'oAuthUserInfo' 로 쓰면, spring data jpa query 가 잘 생성되지 않음
     private String name;
+    private String profileImage;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
@@ -60,5 +61,14 @@ public class Member {
     private void validate() {
         Assert.notNull(memberId, "'memberId' must not be null");
         Assert.notNull(oauthUserInfo, "'oAuthUserInfo' must not be null");
+    }
+
+    public Member updateProfileImage(String profileImage) {
+        if (StringUtils.isEmpty(profileImage)) {
+            throw new IllegalArgumentException("'profileImage' must not be null or empty");
+        }
+        this.profileImage = profileImage;
+        this.validate();
+        return this;
     }
 }
